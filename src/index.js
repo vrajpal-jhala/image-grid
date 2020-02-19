@@ -8,14 +8,23 @@ var colStart = '<div class="col-md-3 col-sm-6 col-12">';
 var divEnd = '</div>';
 var imgPerColumn = [3, 2, 3, 2];
 
+var searchBar = document.getElementById("searchBar");
+
 document.getElementById("searchBtn").onclick = function () {
     document.querySelector(".search").classList.toggle("hide");
+
+    if (document.querySelector(".search").classList.contains("hide")) {
+        searchBar.value = "";
+        searchBar.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+
     this.querySelector(".fas").classList.toggle("fa-times");
     this.querySelector(".fas").classList.toggle("fa-search");
 };
 
-function getImageComponent(src) {
-    return '<img src="' + src + '" alt="image" />'
+function getImageComponent(src, userName, userLocation) {
+    return '<div class="image"><img src="' + src + '" alt="image" /><div class="user-info"><h1>'
+        + userName + '</h1><h4>' + userLocation + '</h4></div></div>';
 }
 
 function showImages(images) {
@@ -28,7 +37,7 @@ function showImages(images) {
 
     for (var i = 0; i < images.length; i++) {
         if (imgPerColumn[colNo] > elementCount++) {
-            allComponent += getImageComponent(images[i].urls.small);
+            allComponent += getImageComponent(images[i].urls.small, images[i].user.name, images[i].user.location);
         } else {
             allComponent += divEnd + colStart;
             colNo++;
@@ -59,7 +68,7 @@ function listImages() {
     });
 }
 
-document.getElementById("searchBar").oninput = function () {
+searchBar.oninput = function () {
     var query = this.value;
     if (query == "") {
         listImages();

@@ -1,6 +1,6 @@
-# empty-project
+# image-grid
 
-Empty project.
+Image grid.
 
 ## Building and running on localhost
 

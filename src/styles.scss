@@ -1,6 +1,28 @@
-img {
-  margin-top: 8px;
-  width: 100%;
+.image {
+  position: relative;
+  img {
+    margin-top: 8px;
+    width: 100%;
+  }
+
+  &:hover {
+    .user-info {
+      opacity: 1;
+    }
+  }
+}
+
+.user-info {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: lightcyan;
+  width: 75%;
+  text-align: center;
+  padding: 10px;
+  opacity: 0;
+  transition: opacity 0.5s;
 }
 
 .search {
