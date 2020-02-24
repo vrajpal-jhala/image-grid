@@ -31,7 +31,6 @@ function showImages(images) {
     var allComponent = "";
     var elementCount = 0;
     var colNo = 0;
-    var cnt = 0;
 
     allComponent += colStart;
 
@@ -56,16 +55,24 @@ function showError(error) {
     app.innerHTML = "<span class='h4'>" + error + "</span>";
 }
 
-function listImages() {
+function apiCall(url, query) {
     axios({
         method: 'GET',
-        url: 'https://api.unsplash.com/photos/?client_id=8HurEgRguetU5fAYBS1-_LSot8G_p3PcUCZjPVyuWws',
+        url: url,
         responseType: 'json'
     }).then(function (response) {
-        showImages(response.data);
+        showImages(query == '' ? response.data : response.data.results);
     }).catch(function (error) {
         showError(error);
     });
+}
+
+function listImages() {
+    apiCall('https://api.unsplash.com/photos/?client_id=8HurEgRguetU5fAYBS1-_LSot8G_p3PcUCZjPVyuWws', '');
+}
+
+function searchImages(query) {
+    apiCall('https://api.unsplash.com/search/photos/?client_id=8HurEgRguetU5fAYBS1-_LSot8G_p3PcUCZjPVyuWws&query=' + query, query);
 }
 
 searchBar.oninput = function () {
@@ -73,15 +80,7 @@ searchBar.oninput = function () {
     if (query == "") {
         listImages();
     } else {
-        axios({
-            method: 'GET',
-            url: 'https://api.unsplash.com/search/photos/?client_id=8HurEgRguetU5fAYBS1-_LSot8G_p3PcUCZjPVyuWws&query=' + query,
-            responseType: 'json'
-        }).then(function (response) {
-            showImages(response.data.results);
-        }).catch(function (error) {
-            showError(error);
-        });
+        searchImages(query);
     }
 };
 
